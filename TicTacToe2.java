@@ -9,80 +9,97 @@ public class TicTacToe2 {
 
     String playerX = "X", playerO = "O", currentPlayer = playerX;
 
-    int row, col;
+    int row, col, col1, row1;
+    boolean isX , canGo ;
 
+    TicTacToe2() {
+//        initGameBoard();
+        isX = true;
+        canGo = true;
 
-    TicTacToe2(){
-        initGameBoard();
-        outer:
-        while (true){           // Переделать вайл тру. Сделать функцию, котороя проверяет победу и возвращает буливун. Пихать сюда его
+        while (true) {           // Переделать вайл тру. Сделать функцию, котороя проверяет победу и возвращает буливун. Пихать сюда его
             System.out.println();//чоб хоть что-то в этом коде было красиво
 
-            if (currentPlayer.equals(playerX)){
+
+            if (currentPlayer.equals(playerX) && canGo) {
                 System.out.println("Ходят крестики");
-            }
-            else{
+            } else {
                 System.out.println("Ходят нолики");
-            }
-            System.out.println("Введите колонку");
-            col = inputScan.nextInt(); // сделать проверку на то, чтоб число было от 0 до 2, иначе ошибки всякие вылазят
-
-            System.out.println("Введите строку");
-            row = inputScan.nextInt();
-            if (gameBoard[col][row].equals("X") || gameBoard[col][row].equals("O")) {
-                System.out.println("u cant");// это неработающая проверка на предмет того, что на этом месте уже что-то лежит. Починить или доломать
-                    break outer;
-            }else{
-                buildGameBoard();
+                System.out.println();
             }
 
+            currentPlayer = currentPlayer.equals(playerX) && canGo ? playerO : playerX;
 
-            currentPlayer = currentPlayer.equals(playerX) ? playerO : playerX; // Смена игрока происходит раз в итерацию
+
+            while (true) {
+                System.out.println("Введите строчку");
+                row = inputScan.nextInt();
+                if (row <= 3 && row >= 0) {
+                    break;
+                }else{
+                    System.out.println("Не, так не покатит. Число от ноля до двойки, давай пробуй еще раз");
+                }
+            }
+
+            while (true) {
+                System.out.println("Введите колонку");
+                col = inputScan.nextInt();
+                if (col <= 3 && col >= 0) {
+                    break;
+                }else{
+                    System.out.println("Не, так не покатит. Число от ноля до двойки, давай пробуй еще раз");
+                }
+            }
+
+            buildGameBoard2();
+
         }
-
 
 
     }
 
 
 
-
-    public void initGameBoard(){
-        for(int row = 0; row < 3; row++){
-            for (int col = 0; col < 3; col++){
-                gameBoard[col][row] = "0";
-            }
-        }
-    }
-
-    public void buildGameBoard(){
-        for(int i = 0; i < 3; i++){
-            for (int j = 0; j < 3; j++){
-                    if (j == col && i == row){
-                        if (currentPlayer.equals(playerX)){
-                            gameBoard[i][j] = "X";
-                        }
-                        else{
-                            gameBoard[i][j] = "O";
-                        }
-
+    private void buildGameBoard2() {
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                if (i == row && j == col) {
+                    if (gameBoard[i][j] != null) {
+                        System.out.println("Нельзя ставить на чужое место, давай еще раз");
+                        canGo = false;
+                        return;
                     }
+                    if (isX) {
+                        gameBoard[i][j] = "X";
+                        isX = false;
+                    } else {
+                        gameBoard[i][j] = "O";
+                        isX = true;
+                    }
+                }
+            }
+        }
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                if (gameBoard[i][j] == null){
+                    System.out.print("0" + "\t");
+                }else{
+                    System.out.print(gameBoard[i][j] + "\t");
+                }
 
-                System.out.print(gameBoard[i][j] + "\t");
-
-                if (j < 2){
+                if (j < 2) {
                     System.out.print("|");
                 }
-
-                }
+            }
             System.out.println();
-            if (i<2){
+
+            if (i < 2) {
                 System.out.println("___________");
             }
-
-
         }
     }
+
+
 }
 
 
