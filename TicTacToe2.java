@@ -3,21 +3,27 @@ package com.company;
 import java.util.Scanner;
 
 public class TicTacToe2 {
-    String[][] gameBoard = new String[3][3]; // тут вообще всё серое, но не понятно почему(((
+    String[][] gameBoard ; // тут вообще всё может быть private, но не понятно почему(((
 
-    Scanner inputScan = new Scanner(System.in);
+    String playerX , playerO , currentPlayer ;
 
-    String playerX = "X", playerO = "O", currentPlayer = playerX;
-
-    int row, col, col1, row1;
+    int row, col;
     boolean isX , canGo ;
 
     TicTacToe2() {
-//        initGameBoard();
+
         isX = true;
         canGo = true;
+        playerX = "X";
+        playerO = "O";
+        currentPlayer = playerX;
+        Scanner inputScan = new Scanner(System.in);
+        gameBoard = new String[3][3];
+        boolean winX = false, winO = false, draw = false;
 
-        while (true) {           // Переделать вайл тру. Сделать функцию, котороя проверяет победу и возвращает буливун. Пихать сюда его
+        initGameBoard();
+
+        while (true) {           //до сих пор процесс бесконечный, надо шот делать
             System.out.println();//чоб хоть что-то в этом коде было красиво
 
 
@@ -51,20 +57,35 @@ public class TicTacToe2 {
                 }
             }
 
-            buildGameBoard2();
+            buildGameBoard();
+            if (winCheckerO()){
+                System.out.println("Нолики победили");
 
+            }else if(winCheckerX()){
+                System.out.println("Крестики победили");
+
+            }
+            else {
+                System.out.println("Ну как-бы ничья"); //Оно выводится постоянно, надо сделать функцию на ничью
+            }
         }
 
 
     }
 
+    private void initGameBoard() {
+        for (int i = 0; i < gameBoard.length; i++) {
+            for (int j = 0; j < 3; j++) {
+                gameBoard[i][j] = "0";
+            }
+        }
+    }
 
-
-    private void buildGameBoard2() {
-        for (int i = 0; i < 3; i++) {
+    private void buildGameBoard() {
+        for (int i = 0; i < gameBoard.length; i++) {
             for (int j = 0; j < 3; j++) {
                 if (i == row && j == col) {
-                    if (gameBoard[i][j] != null) {
+                    if (gameBoard[i][j] != "0") {
                         System.out.println("Нельзя ставить на чужое место, давай еще раз");
                         canGo = false;
                         return;
@@ -79,13 +100,10 @@ public class TicTacToe2 {
                 }
             }
         }
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < gameBoard.length; i++) {
             for (int j = 0; j < 3; j++) {
-                if (gameBoard[i][j] == null){
-                    System.out.print("0" + "\t");
-                }else{
-                    System.out.print(gameBoard[i][j] + "\t");
-                }
+
+                System.out.print(gameBoard[i][j] + "\t");
 
                 if (j < 2) {
                     System.out.print("|");
@@ -97,6 +115,47 @@ public class TicTacToe2 {
                 System.out.println("___________");
             }
         }
+    }
+
+    private boolean winCheckerX() {
+        boolean winX = false;
+        int j = 0;
+        int a = 0;
+        for (int i = 0; i < gameBoard.length; i++) {
+            if (gameBoard[i][j].equals("X")  && gameBoard[i][j + 1].equals("X") && gameBoard[i][j+2].equals("X")) {
+                winX = true;
+            }
+            else if(gameBoard[a][j].equals("X")  && gameBoard[a+1][j + 1].equals("X") && gameBoard[a+2][j+2].equals("X")){
+                winX = true;
+            }
+            else {
+                winX = false;
+            }
+
+        }
+
+        return winX;
+    }
+
+
+    private boolean winCheckerO(){
+        boolean winO = false;
+        int j = 0;
+        int a = 0;
+        for (int i = 0; i < gameBoard.length; i++) {
+            if (gameBoard[i][j].equals("O")  && gameBoard[i][j + 1].equals("O") && gameBoard[i][j+2].equals("O")) {
+                winO = true;
+            }
+            else if(gameBoard[a][j].equals("O")  && gameBoard[a+1][j + 1].equals("O") && gameBoard[a+2][j+2].equals("O")){
+                winO = true;
+            }
+            else {
+                winO = false;
+            }
+
+        }
+
+        return winO;
     }
 
 
