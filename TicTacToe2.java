@@ -3,115 +3,167 @@ package com.company;
 import java.util.Scanner;
 
 public class TicTacToe2 {
-    String[][] gameBoard ; // тут вообще всё может быть private, но не понятно почему(((
+    String[][] gameBoardArr; // тут вообще всё может быть private, но не понятно почему(((
 
-    String playerX , playerO , currentPlayer ;
+    String playerX, playerO, currentPlayer; //разобраться с этим
 
-    int row, col;
-    boolean isX , canGo ;
+    private int row, col;
+    private boolean isX, canGo;
+
 
     TicTacToe2() {
 
-        isX = true;
-        canGo = true;
-        playerX = "X";
-        playerO = "O";
-        currentPlayer = playerX;
-        Scanner inputScan = new Scanner(System.in);
-        gameBoard = new String[3][3];
-        boolean winX = false, winO = false, draw = false;
-
-        initGameBoard();
-
-        while (true) {           //до сих пор процесс бесконечный, надо шот делать
-            System.out.println();//чоб хоть что-то в этом коде было красиво
+        boolean yes = true, no = false;
 
 
-            if (currentPlayer.equals(playerX) && canGo) {
-                System.out.println("Ходят крестики");
+        String oneMoreTime = "Yes";
+
+
+        while (true) {
+
+            if (oneMoreTime.equalsIgnoreCase("yes")) {
+                //nothing here, for sure
+
+            } else if (oneMoreTime.equalsIgnoreCase("no")) {
+                System.out.println("Датуидания");
+                break;
+
             } else {
-                System.out.println("Ходят нолики");
-                System.out.println();
+                System.out.println("Свершилось что-то страшное, уходим");
             }
 
-            currentPlayer = currentPlayer.equals(playerX) && canGo ? playerO : playerX;
+            isX = true;
+            canGo = true;
+            playerX = "X";
+            playerO = "O";
+            currentPlayer = playerX;
+            Scanner inputScan = new Scanner(System.in);
+            gameBoardArr = new String[3][3];
 
 
-            while (true) {
-                System.out.println("Введите строчку");
-                row = inputScan.nextInt();
-                if (row <= 3 && row >= 0) {
-                    break;
-                }else{
-                    System.out.println("Не, так не покатит. Число от ноля до двойки, давай пробуй еще раз");
+            initGameBoard();
+
+            while (true) { //Сделать повторение программы после спрашивания об этом у пользователя
+
+
+                if (currentPlayer.equals(playerX) && canGo) { //Это работает некоректно (при попытке поставить на занятое место происходит дичь, ЧИНИ)
+                    System.out.println("Ходят крестики \n");
+
+                } else if (currentPlayer.equals(playerO) && canGo) {
+                    System.out.println("Ходят нолики \n");
+
                 }
-            }
 
-            while (true) {
-                System.out.println("Введите колонку");
-                col = inputScan.nextInt();
-                if (col <= 3 && col >= 0) {
-                    break;
-                }else{
-                    System.out.println("Не, так не покатит. Число от ноля до двойки, давай пробуй еще раз");
+
+                if (currentPlayer.equals(playerX) && canGo) {
+                    currentPlayer = playerO;
+                } else if (currentPlayer.equals(playerO) && canGo) {
+                    currentPlayer = playerX;
                 }
-            }
 
-            buildGameBoard();
-            if (winCheckerO()){
-                System.out.println("Нолики победили");
 
-            }else if(winCheckerX()){
-                System.out.println("Крестики победили");
+                while (true) {
+                    System.out.println("Введите строчку");
+                    row = inputScan.nextInt();
+                    if (row <= 3 && row >= 0) {
+                        break;
+                    } else {
+                        System.out.println("Не, так не покатит. Число от ноля до двойки, давай пробуй еще раз");
+                    }
+                }
 
-            }
-            else {
-                System.out.println("Ну как-бы ничья"); //Оно выводится постоянно, надо сделать функцию на ничью
+                while (true) {
+                    System.out.println("Введите колонку");
+                    col = inputScan.nextInt();
+                    if (col <= 3 && col >= 0) {
+                        break;
+                    } else {
+                        System.out.println("Не, так не покатит. Число от ноля до двойки, давай пробуй еще раз");
+                    }
+                }
+
+                buildGameBoard();
+                if (winCheckerO()) {
+                    System.out.println("/////////////////////////// \n Нолики победили \n ИГРА ЗАКОНЧЕНА");
+                    System.out.println("\n Играем еще?");
+                    oneMoreTime = inputScan.next();
+
+                    if (oneMoreTime.equalsIgnoreCase("yes")){
+                        System.out.println("Мм, да я вижу вы знаете толк в извращениях... Ну чтож, поехали \n");
+                    }
+                    break;
+
+
+                } else if (winCheckerX()) {
+                    System.out.println("/////////////////////////// \n Крестики победили \n ИГРА ЗАКОНЧЕНА");
+                    System.out.println("\n Играем еще?");
+                    oneMoreTime = inputScan.next();
+
+                    if (oneMoreTime.equalsIgnoreCase("yes")){
+                        System.out.println("Мм, да я вижу вы знаете толк в извращениях... Ну чтож, поехали \n");
+                    }
+                    break;
+
+
+                } else if(drawChecker()) {
+                    System.out.println("/////////////////////////// \n Хм, похоже на ничью");
+                    System.out.println("\n Играем еще?");
+                    oneMoreTime = inputScan.next();
+
+                    if (oneMoreTime.equalsIgnoreCase("yes")){
+                        System.out.println("Мм, да я вижу вы знаете толк в извращениях... Ну чтож, поехали \n");
+                    }
+                    break;
+                }
+
             }
         }
-
 
     }
 
     private void initGameBoard() {
-        for (int i = 0; i < gameBoard.length; i++) {
-            for (int j = 0; j < 3; j++) {
-                gameBoard[i][j] = "0";
+        for (int i = 0; i < gameBoardArr.length; i++) {
+            for (int j = 0; j < gameBoardArr.length; j++) {
+                gameBoardArr[i][j] = "0";
             }
         }
     }
 
     private void buildGameBoard() {
-        for (int i = 0; i < gameBoard.length; i++) {
-            for (int j = 0; j < 3; j++) {
+        for (int i = 0; i < gameBoardArr.length; i++) {
+            for (int j = 0; j < gameBoardArr.length; j++) {
                 if (i == row && j == col) {
-                    if (gameBoard[i][j] != "0") {
+                    if (!gameBoardArr[i][j].equals("0")) {
                         System.out.println("Нельзя ставить на чужое место, давай еще раз");
                         canGo = false;
                         return;
                     }
                     if (isX) {
-                        gameBoard[i][j] = "X";
+                        gameBoardArr[i][j] = "X";
                         isX = false;
+                        canGo = true;
+
                     } else {
-                        gameBoard[i][j] = "O";
+                        gameBoardArr[i][j] = "O";
                         isX = true;
+                        canGo = true;
+
                     }
                 }
             }
         }
-        for (int i = 0; i < gameBoard.length; i++) {
-            for (int j = 0; j < 3; j++) {
+        for (int i = 0; i < gameBoardArr.length; i++) {
+            for (int j = 0; j < gameBoardArr.length; j++) {
 
-                System.out.print(gameBoard[i][j] + "\t");
+                System.out.print(gameBoardArr[i][j] + "\t");
 
-                if (j < 2) {
+                if (j < gameBoardArr.length - 1) {
                     System.out.print("|");
                 }
             }
             System.out.println();
 
-            if (i < 2) {
+            if (i < gameBoardArr.length - 1) {
                 System.out.println("___________");
             }
         }
@@ -119,38 +171,58 @@ public class TicTacToe2 {
 
     private boolean winCheckerX() {
         boolean winX = false;
-        int j = 0;
-        int a = 0;
-        for (int i = 0; i < gameBoard.length; i++) {
-            if (gameBoard[i][j].equals("X")  && gameBoard[i][j + 1].equals("X") && gameBoard[i][j+2].equals("X")) {
+
+        for (int i = 0; i < 3; i++) {
+            if (gameBoardArr[i][0].equals("X") && gameBoardArr[i][1].equals("X") && gameBoardArr[i][2].equals("X")) {
                 winX = true;
-            }
-            else if(gameBoard[a][j].equals("X")  && gameBoard[a+1][j + 1].equals("X") && gameBoard[a+2][j+2].equals("X")){
+                break;
+
+            } else if (gameBoardArr[i][0].equals("X") && gameBoardArr[i][1].equals("X") && gameBoardArr[i][2].equals("X")) {
                 winX = true;
-            }
-            else {
-                winX = false;
+                break;
+
+            } else if (gameBoardArr[0][i].equals("X") && gameBoardArr[1][i].equals("X") && gameBoardArr[2][i].equals("X")) {
+                winX = true;
+                break;
+
+            } else if (gameBoardArr[0][0].equals("X") && gameBoardArr[1][1].equals("X") && gameBoardArr[2][2].equals("X")) {
+                winX = true;
+                break;
+
+            }else if(gameBoardArr[0][2].equals("X") && gameBoardArr[1][1].equals("X") && gameBoardArr[2][0].equals("X")){
+                winX = true;
+                break;
             }
 
         }
 
         return winX;
+
     }
 
-
-    private boolean winCheckerO(){
+    private boolean winCheckerO() {
         boolean winO = false;
-        int j = 0;
-        int a = 0;
-        for (int i = 0; i < gameBoard.length; i++) {
-            if (gameBoard[i][j].equals("O")  && gameBoard[i][j + 1].equals("O") && gameBoard[i][j+2].equals("O")) {
+
+        for (int i = 0; i < gameBoardArr.length; i++) {
+            if (gameBoardArr[i][0].equals("O") && gameBoardArr[i][1].equals("O") && gameBoardArr[i][2].equals("O")) {
                 winO = true;
-            }
-            else if(gameBoard[a][j].equals("O")  && gameBoard[a+1][j + 1].equals("O") && gameBoard[a+2][j+2].equals("O")){
+                break;
+
+            } else if (gameBoardArr[i][0].equals("O") && gameBoardArr[i][1].equals("O") && gameBoardArr[i][2].equals("O")) {
                 winO = true;
-            }
-            else {
-                winO = false;
+                break;
+
+            } else if (gameBoardArr[0][i].equals("O") && gameBoardArr[1][i].equals("O") && gameBoardArr[2][i].equals("O")) {
+                winO = true;
+                break;
+
+            } else if (gameBoardArr[0][0].equals("O") && gameBoardArr[1][1].equals("O") && gameBoardArr[2][2].equals("O")) {
+                winO = true;
+                break;
+
+            }else if(gameBoardArr[0][2].equals("O") && gameBoardArr[1][1].equals("O") && gameBoardArr[2][0].equals("O")){
+                winO = true;
+                break;
             }
 
         }
@@ -158,7 +230,25 @@ public class TicTacToe2 {
         return winO;
     }
 
+    private boolean drawChecker() {
+        int draw = 0;
+        boolean isDraw;
 
+        for (int i = 0; i < gameBoardArr.length; i++) {
+            for (int j = 0; j < gameBoardArr.length; j++) {
+                if (!gameBoardArr[i][j].equals("0")){
+                    draw++;
+                }
+            }
+        }
+        if (draw == 9){
+            isDraw = true;
+        }
+        else{
+            isDraw = false;
+        }
+        return isDraw;
+    }
 }
 
 
