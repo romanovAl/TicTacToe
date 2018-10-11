@@ -29,7 +29,8 @@ public class TicTacToe2 {
                 break;
 
             } else {
-                System.out.println("Свершилось что-то страшное, уходим");
+                System.out.println("Свершилось что-то страшное, сворачиваемся");
+                break;
             }
 
             isX = true;
@@ -43,10 +44,10 @@ public class TicTacToe2 {
 
             initGameBoard();
 
-            while (true) { //Сделать повторение программы после спрашивания об этом у пользователя
+            while (true) {
 
 
-                if (currentPlayer.equals(playerX) && canGo) { //Это работает некоректно (при попытке поставить на занятое место происходит дичь, ЧИНИ)
+                if (currentPlayer.equals(playerX) && canGo) {
                     System.out.println("Ходят крестики \n");
 
                 } else if (currentPlayer.equals(playerO) && canGo) {
@@ -124,7 +125,7 @@ public class TicTacToe2 {
     private void initGameBoard() {
         for (int i = 0; i < gameBoardArr.length; i++) {
             for (int j = 0; j < gameBoardArr.length; j++) {
-                gameBoardArr[i][j] = "0";
+                gameBoardArr[i][j] = " ";
             }
         }
     }
@@ -133,7 +134,7 @@ public class TicTacToe2 {
         for (int i = 0; i < gameBoardArr.length; i++) {
             for (int j = 0; j < gameBoardArr.length; j++) {
                 if (i == row && j == col) {
-                    if (!gameBoardArr[i][j].equals("0")) {
+                    if (!gameBoardArr[i][j].equals(" ")) {
                         System.out.println("Нельзя ставить на чужое место, давай еще раз");
                         canGo = false;
                         return;
@@ -155,7 +156,7 @@ public class TicTacToe2 {
         for (int i = 0; i < gameBoardArr.length; i++) {
             for (int j = 0; j < gameBoardArr.length; j++) {
 
-                System.out.print(gameBoardArr[i][j] + "\t");
+                System.out.print(" " + gameBoardArr[i][j] + "\t");
 
                 if (j < gameBoardArr.length - 1) {
                     System.out.print("|");
@@ -164,7 +165,7 @@ public class TicTacToe2 {
             System.out.println();
 
             if (i < gameBoardArr.length - 1) {
-                System.out.println("___________");
+                System.out.println("______________");
             }
         }
     }
@@ -236,7 +237,7 @@ public class TicTacToe2 {
 
         for (int i = 0; i < gameBoardArr.length; i++) {
             for (int j = 0; j < gameBoardArr.length; j++) {
-                if (!gameBoardArr[i][j].equals("0")){
+                if (!gameBoardArr[i][j].equals(" ")){
                     draw++;
                 }
             }
