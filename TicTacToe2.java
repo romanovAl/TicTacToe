@@ -2,10 +2,10 @@ package com.company;
 
 import java.util.Scanner;
 
-public class TicTacToe2 {
-    String[][] gameBoardArr; // тут вообще всё может быть private, но не понятно почему(((
+class TicTacToe2 {
+    private String[][] gameBoardArr;
 
-    String playerX, playerO, currentPlayer; //разобраться с этим
+    private String playerX, playerO, currentPlayer; //разобраться с этим
 
     private int row, col;
     private boolean isX, canGo;
