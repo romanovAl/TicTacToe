@@ -13,8 +13,6 @@ public class TicTacToe2 {
 
     TicTacToe2() {
 
-        boolean yes = true, no = false;
-
 
         String oneMoreTime = "Yes";
 
